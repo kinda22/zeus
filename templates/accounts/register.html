@@ -1,0 +1,39 @@
+{% include "common/header.html"%}
+{% block content %}
+    <div class="register-container animated fadeInDown">
+        <div class="registerbox bg-white">
+            <div class="registerbox-title">注册</div>
+
+            <div class="registerbox-caption ">请输入账号的注册信息</div>
+            <form action="{% url 'accounts_register' %}" method="post">
+                <div class="registerbox-textbox">
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+                <div class="registerbox-textbox">
+                    {{ form.password.errors }}
+                    {{ form.password }}
+                </div>
+                <div class="registerbox-textbox">
+                    {{ form.password_confirm.errors }}
+                    {{ form.password_confirm }}
+                </div>
+                <div class="registerbox-submit">
+                    <input type="submit" class="btn btn-primary btn-block" value="注册">
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </div>
+            </form>
+        </div>
+
+        <div class="logobox">
+        {% if messages %}
+            <ul class="messages">
+           {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+           {% endfor %}
+           </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% include "common/footer.html"%}

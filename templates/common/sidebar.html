@@ -1,0 +1,51 @@
+<ul class="nav sidebar-menu">
+    <!--Dashboard-->
+    <li {% if "/" == request.path %} class="active" {% endif %}>
+        <a href="{% url "home_index" %}">
+            <i class="menu-icon glyphicon glyphicon-home"></i>
+            <span class="menu-text"> Home </span>
+        </a>
+    </li>
+    <li {% if "/dashboard/" in request.path %} class="active" {% endif %}>
+        <a href="{% url "dashboard_index" %}">
+            <i class="menu-icon fa fa-bar-chart-o"></i>
+            <span class="menu-text"> 仪表盘 </span>
+        </a>
+    </li>
+    <li {% if "/stree/" in request.path %} class="active" {% endif %}>
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon fa fa-list-alt"></i>
+            <span class="menu-text"> 分组 </span>
+            <i class="menu-expand"></i>
+        </a>
+        <ul class="submenu">
+        </ul>
+    </li>
+
+    {% if user.is_authenticated %}
+    <!--Settings-->
+    <li {% if "/manager/" in request.path %}class="active open" {% endif %} >
+        <a href="#" class="menu-dropdown">
+            <i class="menu-icon fa fa-table"></i>
+            <span class="menu-text"> 系统管理 </span>
+            <i class="menu-expand"></i>
+        </a>
+
+        <ul class="submenu">
+        {% if user.is_staff %}
+            <li {% if "user/" in request.path %} class="active" {% endif %}>
+                <a href="{% url "manager_user_show" %}">
+                    <span class="menu-text">用户管理</span>
+                </a>
+            </li>
+        {% endif %}
+            <li {% if "profile/" in request.path %} class="active" {% endif %}>
+               <a href="{% url "manager_profile" %}">
+                  <span class="menu-text">个人设置</span>
+               </a>
+            </li>
+        </ul>
+    </li>
+    {% endif %}
+
+</ul>

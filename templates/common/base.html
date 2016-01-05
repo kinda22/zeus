@@ -1,0 +1,56 @@
+{% include "common/header.html" %}
+    <!-- Loading Container -->
+    {% include "common/load-container.html" %}
+    <!--  /Loading Container -->
+
+    <!-- Navbar -->
+    {% include "common/navbar.html" %}
+    <!-- /Navbar -->
+
+    <!-- Main Container -->
+    <div class="main-container container-fluid">
+
+        <!-- Page Container -->
+        <div class="page-container">
+
+            <!-- Page Sidebar -->
+            <div class="page-sidebar" id="sidebar">
+                <!-- Page Sidebar Header-->
+                {% include "common/sidebar-header.html" %}
+                <!-- /Page Sidebar Header -->
+
+                <!-- Sidebar Menu -->
+                {% include "common/sidebar.html" %}
+                <!-- /Sidebar Menu -->
+            </div>
+            <!-- /Page Sidebar -->
+
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Breadcrumb -->
+                {% include "common/page-breadcrumb.html" %}
+                <!-- /Page Breadcrumb -->
+
+                <!-- Page Header -->
+                {% include "common/page-header.html" %}
+                <!-- /Page Header -->
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    {% block page-body %}
+                        <!-- Your Content Goes Here -->
+                    {% endblock %}
+                </div>
+                <!-- /Page Body -->
+
+            </div>
+            <!-- /Page Content -->
+        </div>
+        <!-- /Page Container -->
+
+
+    </div>
+    <!-- Main Container -->
+
+{% include "common/footer.html" %}

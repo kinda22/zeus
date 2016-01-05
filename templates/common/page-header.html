@@ -1,0 +1,33 @@
+<div class="page-header position-relative">
+    <div class="header-title">
+        <h1>
+        {% block page-header %}
+        {% endblock %}
+        </h1>
+    </div>
+    <!--Header Buttons-->
+    <div class="header-buttons">
+        <a class="sidebar-toggler" href="#">
+            <i class="fa fa-arrows-h"></i>
+        </a>
+        <a class="refresh" id="refresh-toggler" href="">
+            <i class="glyphicon glyphicon-refresh"></i>
+        </a>
+        <a class="fullscreen" id="fullscreen-toggler" href="#">
+            <i class="glyphicon glyphicon-fullscreen"></i>
+        </a>
+    </div>
+    <!--Header Buttons End-->
+</div>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }} fade in"{% endif %}>
+        <button class="close" data-dismiss="alert">×</button>
+        <i class="fa-fw fa fa-{{ message.tags }}"></i>
+        <strong>{{ message.tags }}</strong>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

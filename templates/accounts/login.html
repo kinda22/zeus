@@ -1,0 +1,60 @@
+{% include "common/header.html"%}
+<div class="login-container animated fadeInDown">
+    <div class="loginbox bg-white">
+        <div class="loginbox-title">登录</div>
+            <div class="loginbox-social">
+                <div class="social-title ">使用第三方账号登录</div>
+                <div class="social-buttons">
+                    <a href="" class="button-facebook">
+                        <i class="social-icon fa fa-weibo"></i>
+                    </a>
+                    <a href="" class="button-twitter">
+                        <i class="social-icon fa fa-qq"></i>
+                    </a>
+                    <a href="" class="button-google">
+                        <i class="social-icon fa fa-google"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+                <div class="or">OR</div>
+            </div>
+        
+
+            <form action="{% url 'accounts_login' %}" method="post">
+                <div class="loginbox-textbox">
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+                <div class="loginbox-textbox">
+                    {{ form.password.errors }}
+                    {{ form.password }}
+                </div>
+                <div class="loginbox-forgot">
+                    <a href="">忘记密码...</a>
+                </div>
+                <div class="loginbox-submit">
+                    <input type="submit" class="btn btn-primary btn-block" value="登录">
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </div>
+            </form>
+
+            <div class="loginbox-signup">
+                <a href="{% url "accounts_register" %}">注册一下？</a>
+            </div>
+
+            <div class="msgbox">
+               {% if messages %}
+               <div class="messages">
+                   {% for message in messages %}
+                   <div{% if message.tags %} class="alert alert-{{ message.tags }} fade in"{% endif %}>{{ message }}</div>
+                   {% endfor %}
+               </div>
+               {% endif %}
+            </div>
+        </div>>
+    </div>
+</div>
+{% include "common/footer.html"%}

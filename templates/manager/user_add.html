@@ -1,0 +1,230 @@
+{% extends 'common/base.html' %}
+{% block page-body %}
+
+<div class="col-lg-8 col-sm-6 col-xs-12">
+    <div class="widget flat radius-bordered">
+        <div class="widget-header bg-blue">
+            <span class="widget-caption">注册新用户</span>
+        </div>
+        <div class="widget-body">
+            <div id="registration-form">
+                <form role="form" method="post">
+                    <div class="form-title">
+                        登录信息
+                    </div>
+                    <div class="form-group">
+                        {% if form.username.errors %}
+                        <div class="alert alert-warning fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-warning"></i>
+                            <strong>警告</strong> {{ form.username.errors.as_text }}
+                        </div>
+                        {% endif %}
+                        <span class="input-icon icon-right">
+                            {{ form.username }}
+                            <i class="glyphicon glyphicon-user circular"></i>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        {% if form.email.errors %}
+                        <div class="alert alert-warning fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-warning"></i>
+                            <strong>警告</strong> {{ form.email.errors.as_text }}
+                        </div>
+                        {% endif %}
+                        <span class="input-icon icon-right">
+                            {{ form.email }}
+                            <i class="fa fa-envelope-o circular"></i>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        {% if form.password.errors %}
+                        <div class="alert alert-warning fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-warning"></i>
+                            <strong>警告</strong> {{ form.password.errors.as_text }}
+                        </div>
+                        {% endif %}
+                        <span class="input-icon icon-right">
+                            {{ form.password }}
+                            <i class="fa fa-lock circular"></i>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        {% if form.password_confirm.errors %}
+                        <div class="alert alert-warning fade in">
+                            <button class="close" data-dismiss="alert">×</button>
+                            <i class="fa-fw fa fa-warning"></i>
+                            <strong>警告</strong> {{ form.password_confirm.errors.as_text }}
+                        </div>
+                        {% endif %}
+                        <span class="input-icon icon-right">
+                            {{ form.password_confirm }}
+                            <i class="fa fa-lock circular"></i>
+                        </span>
+                    </div>
+
+                    <div class="form-title">
+                        个人信息
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.fullname.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.fullname.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.fullname }}
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                {% if form.gender.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.gender.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <div class="radio-inline">
+                                    {% for gender in form.gender %}
+                                    <label >
+                                        {{ gender.tag }}
+                                        <span class="text"> {{ gender.choice_label }} </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.tel.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.tel.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.tel }}
+                                    <i class="glyphicon glyphicon-earphone"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.mobile.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.mobile.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.mobile }}
+                                    <i class="glyphicon glyphicon-phone"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.address.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.address.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.address }}
+                                    <i class="glyphicon glyphicon-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.QQ.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.QQ.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.QQ }}
+                                    <i class="fa fa-rss-square"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.position.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.position.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.position }}
+                                    <i class="fa fa-home"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {% if form.native.errors %}
+                                <div class="alert alert-warning fade in">
+                                    <button class="close" data-dismiss="alert">×</button>
+                                    <i class="fa-fw fa fa-warning"></i>
+                                    <strong>警告</strong> {{ form.native.errors.as_text }}
+                                </div>
+                                {% endif %}
+                                <span class="input-icon icon-right">
+                                    {{ form.native }}
+                                    <i class="fa fa-globe"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <label>
+                                <div class="form-group">
+                                    {{ form.is_active }}
+                                    <span class="text">锁定用户</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-blue">注册</button>
+                 </form>
+             </div>
+
+        </div>
+
+    </div>
+</div>
+{% if form.subject.errors %}
+    <ol>
+    {% for error in form.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+
+
+{% endblock %}

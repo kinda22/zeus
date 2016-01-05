@@ -1,0 +1,15 @@
+<!-- Page Breadcrumb -->
+<div class="page-breadcrumbs">
+    <ul class="breadcrumb">
+        {% for breadcrumb in request.breadcrumbs %}
+        <li>    
+            {% if forloop.first %}
+            <i class="fa fa-home"></i>
+            {% endif %}
+            <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- /Page Breadcrumb -->
+
