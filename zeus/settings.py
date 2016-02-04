@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'zeus',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'dbsa.cn',
+        'HOST': 'localhost',
         'PORT': 3306
     }
 }
