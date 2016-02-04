@@ -8,6 +8,5 @@ urlpatterns = [
     url(r'^accounts/', include(accounts_urls)),
     url(r'^dashboard/', include(dashboard_urls)),
     url(r'^manager/', include(manager_urls)),
-    url(r'^avatar/', include('avatar.urls')),
     url(r'^$', include(home_urls)),
 ]

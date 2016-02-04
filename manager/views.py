@@ -32,7 +32,7 @@ def user_show(request):
     return render_to_response("manager/user_show.html", locals(), context_instance=RequestContext(request))
 
 
-@require_role(role='SA')
+@require_role(role='SP')
 def user_add(request):
     request.breadcrumbs([('Home', '/' ),('新增用户', reverse('manager_user_show'))])
 
@@ -97,54 +97,60 @@ def user_add(request):
 
 
 
-@require_role(role='SA')
+@require_role(role='SP')
 def user_edit(request):
     request.breadcrumbs([('Home', '/' ),('编辑用户', reverse('manager_user_show'))])
     uid = request.GET.get('id')
-    user_object = User.objects.get(pk=uid)
-    userprofile_object = UserProfile.objects.filter(user__id = uid)
+    user = User.objects.get(pk=uid)
+    if UserProfile.objects.filter(user=user).count() == 0:
+        UserProfile.objects.create(user=user)
+
 
     if request.method == 'POST':
-        form = UserFormEdit(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
+        email = request.POST.get("email")
+        fullname = request.POST.get("fullname")
+        gender = request.POST.get("gender")
+        tel = request.POST.get("tel")
+        mobile = request.POST.get("mobile")
+        address = request.POST.get("address")
+        QQ = request.POST.get("QQ")
+        position = request.POST.get("position")
+        native = request.POST.get("native")
 
-            fullname = form.cleaned_data["fullname"]
-            gender = form.cleaned_data["gender"]
-            tel = form.cleaned_data["tel"]
-            mobile = form.cleaned_data["mobile"]
-            address = form.cleaned_data["address"]
-            QQ = form.cleaned_data["QQ"]
-            position = form.cleaned_data["position"]
-            native = form.cleaned_data["native"]
+        is_active = request.POST.get("is_active")
+        is_staff = request.POST.get("is_staff")
 
-            is_active = form.cleaned_data["is_active"]
+        try:
+            user.email = email
+            user.is_active = is_active
+            user.is_staff = is_staff
+            user.save()
 
-            try:
-                user_object = user_object = User.objects.get(pk=uid)
-                user_object.email = email
-                user_object.save()
-                if len(userprofile_object) > 0:
-                    userprofile_object.update(fullname = fullname, gender = gender, tel = tel, mobile = mobile, address = address,QQ = QQ, position = position, native = native)
-                else:
-                    UserProfile.objects.create(user = user_object, fullname = fullname, gender = gender, tel = tel, mobile = mobile,address = address,QQ = QQ, position = position, native = native)
-
-            except ServerError:
-                messages.warning(request, '用户更新失败')
-            else:
-                messages.success(request, '用户更新成功')
-                return redirect('manager_user_show')
-
+            user.userprofile.fullname = fullname
+            user.userprofile.gender = gender
+            user.userprofile.tel = tel
+            user.userprofile.mobile = mobile
+            user.userprofile.address = address
+            user.userprofile.QQ = QQ
+            user.userprofile.position = position
+            user.userprofile.native = native
+            user.userprofile.save()
+            
+           
+        except ServerError:
+            messages.warning(request, '用户更新失败')
         else:
-            messages.warning(request, '表单无效')
-            return render_to_response("manager/user_edit.html", locals(), context_instance=RequestContext(request))
-
-
-    form = UserFormEdit(instance=user_object)
+            messages.success(request, '用户更新成功')
+            return redirect('manager_user_show')
+   
     return render_to_response("manager/user_edit.html", locals(), context_instance=RequestContext(request))
 
+@require_role(role='SP')
 def user_del(request):
-   return render_to_response("manager/user.html", { 'data': user }, context_instance=RequestContext(request))
+    uid = request.GET.get('id')
+    User.objects.get(pk=uid).delete()
+    messages.success(request, '用户删除成功')
+    return redirect('manager_user_show')
 
 
 def profile(request):

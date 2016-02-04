@@ -45,10 +45,12 @@ def require_role(role='SA'):
 
             if role == 'SA':
                 if not request.user.is_staff:
-                    return HttpResponseRedirect(reverse('index'))
+                    messages.warning(request, '没有权限,需要管理员才可以操作')
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
             elif role == 'SP':
                 if not request.user.is_superuser:
-                    return HttpResponseRedirect(reverse('index'))
+                    messages.warning(request, '没有权限,需要超级管理员才可以操作')
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
             return func(request, *args, **kwargs)
 
         return __deco
