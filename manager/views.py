@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
-from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
@@ -107,7 +107,6 @@ def user_edit(request):
     request.breadcrumbs([('Home', '/' ),('用户管理', reverse('manager_user_list')),('编辑用户', reverse('manager_user_list'))])
     uid = request.GET.get('id')
     user = User.objects.get(pk=uid)
-    groups = Group.objects.all()
     if UserProfile.objects.filter(user=user).count() == 0:
         UserProfile.objects.create(user=user)
 
@@ -126,18 +125,11 @@ def user_edit(request):
         is_active = request.POST.get("is_active")
         is_staff = request.POST.get("is_staff")
 
-        choice_groups = request.POST.getlist("choice_groups")
 
         try:
             user.email = email
             user.is_active = is_active
             user.is_staff = is_staff
-
-            user_groups = user.groups.all()
-            print choice_groups
-            print user_groups 
-
-
             user.save()
 
             user.userprofile.fullname = fullname
@@ -167,45 +159,6 @@ def user_del(request):
     return redirect('manager_user_list')
 
 
-
-@require_role(role='SA')
-def group_list(request):
-    request.breadcrumbs([('Home', '/' ),('组管理', reverse('manager_group_list'))])
-    keyword = request.GET.get('keyword', '')
-    page_peer = int(request.GET.get('page_peer', 5))
-    page = int(request.GET.get('page', 1))
-
-    if keyword:
-        groups = Group.objects.filter(Q(username__icontains=keyword) | Q(first_name=keyword) | Q(last_name=keyword)).order_by('username')
-    else:
-        groups = Group.objects.all()
-
-    group_list, page_range, page_peers = page_list(groups,page_peer,page)
-    return render_to_response("manager/group_list.html", locals(), context_instance=RequestContext(request))
-
-
-
-@require_role(role='SP')
-def group_add(request):
-    request.breadcrumbs([('Home', '/' ),('组管理', reverse('manager_group_list')),('新增用户组', reverse('manager_group_add'))])
-    if request.method == 'POST':
-        name = request.POST.get("group_name")
-    
-        try:
-            check_user_is_exist = Group.objects.filter(name=name)
-            if check_user_is_exist:
-                messages.warning(request, '用户组已经存在')
-                raise ServerError
-
-        except ServerError:
-            return render_to_response("manager/group_add.html", locals(), context_instance=RequestContext(request))
-
-        else:
-            Group.objects.create(name=name)
-            messages.success(request, '用户组创建成功')
-            return redirect('manager_group_list')
-
-    return render_to_response("manager/group_add.html", locals(), context_instance=RequestContext(request))
 
 def profile(request):
     request.breadcrumbs([('Home', '/' ),('个人设置', reverse('manager_profile'))])

@@ -9,8 +9,5 @@ urlpatterns = [
     url(r'^user/del$',  user_del,    name="manager_user_del"),
     url(r'^user/show$', user_show,   name="manager_user_show"),
 
-    url(r'^group/$',    group_list,  name="manager_group_list"),
-    url(r'^group/add$', group_add,   name="manager_group_add"),
-
     url(r'^profile/$',  profile,     name="manager_profile"),
 ]

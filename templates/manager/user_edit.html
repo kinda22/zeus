@@ -10,11 +10,11 @@
             <div id="registration-form">
                 <form role="form" method="post">
                     <ul class="nav nav-tabs tabs-flat">    
-                        <li class="active"><a href="#user_info" data-toggle="tab">用户信息</a></li>
-                        <li class><a href="#user_groups" data-toggle="tab">组信息</a></li>
+                        <li class="active"><a href="#user_access" data-toggle="tab">用户信息</a></li>
+                        <li class><a href="#user_info" data-toggle="tab">组信息</a></li>
                     </ul>
                     <div class="tab-content tabs-flat">
-                        <div class="tab-pane active" id="user_info">
+                        <div class="tab-pane active" id="user_access">
                             <div class="form-group">
                                 <span class="input-icon icon-right ">
                                 <input class="form-control" maxlength="20" name="username" value="{{ user.username }}" placeholder="用户名" type="text" disabled>
@@ -28,7 +28,10 @@
                                 <i class="fa fa-envelope-o circular"></i>
                                 </span>
                             </div>
+                        </div>
 
+
+                        <div class="tab-pane" id="user_groups">
                             <div class="form-title">
                                个人信息
                             </div>
@@ -122,34 +125,6 @@
                                             <span class="text">管理员</span>
                                         </label>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="tab-pane" id="user_groups">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <label>用户组</label>
-                                    <select id='select_1' name="all_groups" multiple='multiple' size=10 class="form-control">
-                                        {% for group in groups %}
-                                            {% if group not in user.groups.all%}
-                                                <option value={{ group.id }} >{{ group.name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-xs-1 center">
-                                     <button type="button" id="select_add" name="remove" class="btn btn-grey" style="margin-top:50px;margin-bottom:5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
-                                     <button type="button" id="select_remove" name="add" class="btn btn-grey" ><span class="glyphicon glyphicon-chevron-left"></span></button>
-                                </div>
-                                <div class="col-xs-3">
-                                    <label>在..组中</label>
-                                    <select id='select_2' name="choice_groups" multiple='multiple' size=10 class="form-control">
-                                    {% for group in  user.groups.all %}
-                                        <option value={{ group.id }} selected>{{ group.name }}</option>
-                                    {% endfor %}
-                                    </select>
                                 </div>
                             </div>
                         </div>
