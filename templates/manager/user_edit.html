@@ -9,136 +9,157 @@
         <div class="widget-body">
             <div id="registration-form">
                 <form role="form" method="post">
-                    <div class="form-title">
-                        登录信息
-                    </div>
-                    <div class="form-group">
-                        <span class="input-icon icon-right ">
-                            <input class="form-control" disabled="disabled" id="id_username" maxlength="20" name="username" value="{{ user.username }}" placeholder="用户名" type="text">
-
-                            <i class="glyphicon glyphicon-user circular"></i>
-                        </span>
-                    </div>
-                    <div class="form-group">
-                        
-                        <span class="input-icon icon-right">
-                            <input class="form-control" id="id_email" maxlength="20" name="email" placeholder="邮箱" type="text" value="{{ user.email }}">
-                            <i class="fa fa-envelope-o circular"></i>
-                        </span>
-                    </div>
-
-                    <div class="form-title">
-                        个人信息
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
+                    <ul class="nav nav-tabs tabs-flat">    
+                        <li class="active"><a href="#user_info" data-toggle="tab">用户信息</a></li>
+                        <li class><a href="#user_groups" data-toggle="tab">组信息</a></li>
+                    </ul>
+                    <div class="tab-content tabs-flat">
+                        <div class="tab-pane active" id="user_info">
                             <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_fullname" name="fullname" placeholder="姓名" type="text" value="{{ user.userprofile.fullname }}">
-                                    <i class="fa fa-user"></i>
+                                <span class="input-icon icon-right ">
+                                <input class="form-control" maxlength="20" name="username" value="{{ user.username }}" placeholder="用户名" type="text" disabled>
+                                <i class="glyphicon glyphicon-user circular"></i>
                                 </span>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                
-                                <div class="radio-inline">
+
+                            <div class="form-group">
+                                <span class="input-icon icon-right">
+                                <input class="form-control" id="id_email" maxlength="20" name="email" placeholder="邮箱" type="text" value="{{ user.email }}">
+                                <i class="fa fa-envelope-o circular"></i>
+                                </span>
+                            </div>
+
+                            <div class="form-title">
+                               个人信息
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_fullname" name="fullname" placeholder="姓名" type="text" value="{{ user.userprofile.fullname }}">
+                                        <i class="fa fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input class="form-control colored-blueberry" id="id_gender_0" name="gender" type="radio" value="M" {% if user.userprofile.gender == 'M' %} checked {% endif%}>
+                                                <span class="text"> 男 </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </label>
                                     
-                                    <label>
-                                        <input class="form-control colored-blueberry" id="id_gender_0" name="gender" type="radio" value="M" {% if user.userprofile.gender == 'M' %} checked {% endif%}>
-                                        <span class="text"> 男 </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </label>
-                                    
-                                    <label>
-                                        <input class="form-control colored-blueberry" id="id_gender_1" name="gender" type="radio" value="F" {% if user.userprofile.gender == 'F' %} checked {% endif%}>
-                                        <span class="text"> 女 </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </label>
-                                    
+                                            <label>
+                                                <input class="form-control colored-blueberry" id="id_gender_1" name="gender" type="radio" value="F" {% if user.userprofile.gender == 'F' %} checked {% endif%}>
+                                                <span class="text"> 女 </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_tel" maxlength="20" name="tel" placeholder="电话" type="text" value="{{ user.userprofile.tel }}">
+                                        <i class="glyphicon glyphicon-earphone"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_mobile" maxlength="20" name="mobile" placeholder="手机" type="text" value="{{ user.userprofile.mobile }}">
+                                        <i class="glyphicon glyphicon-phone"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_address" maxlength="200" name="address" placeholder="通讯地址" type="text" value="{{ user.userprofile.address }}">
+                                        <i class="glyphicon glyphicon-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_QQ" maxlength="20" name="QQ" placeholder="QQ" type="text" value="{{ user.userprofile.QQ }}">
+                                        <i class="fa fa-rss-square"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_position" maxlength="20" name="position" placeholder="所在地" type="text" value="{{ user.userprofile.position }}">
+                                        <i class="fa fa-home"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right">
+                                        <input class="form-control" id="id_native" maxlength="20" name="native" placeholder="籍贯" type="text" value="{{ user.userprofile.native}}">
+                                        <i class="fa fa-globe"></i>
+                                       </span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>
+                                            <input class="colored-success" id="id_is_active" name="is_active" type="checkbox" {% if user.is_active %} checked {% endif %}>
+                                            <span class="text">激活用户</span> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                        </label>
+                                        <label>
+                                            <input class="colored-success" id="id_is_staff" name="is_staff" type="checkbox" {% if user.is_staff %} checked {% endif %}>
+                                            <span class="text">管理员</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_tel" maxlength="20" name="tel" placeholder="电话" type="text" value="{{ user.userprofile.tel }}">
-                                    <i class="glyphicon glyphicon-earphone"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_mobile" maxlength="20" name="mobile" placeholder="手机" type="text" value="{{ user.userprofile.mobile }}">
-                                    <i class="glyphicon glyphicon-phone"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_address" maxlength="200" name="address" placeholder="通讯地址" type="text" value="{{ user.userprofile.address }}">
-                                    <i class="glyphicon glyphicon-envelope"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_QQ" maxlength="20" name="QQ" placeholder="QQ" type="text" value="{{ user.userprofile.QQ }}">
-                                    <i class="fa fa-rss-square"></i>
-                                </span>
+
+                        <div class="tab-pane" id="user_groups">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <label>用户组</label>
+                                    <select id='select_1' name="all_groups" multiple='multiple' size=10 class="form-control">
+                                        {% for group in groups %}
+                                            {% if group not in user.groups.all%}
+                                                <option value={{ group.id }} >{{ group.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 center">
+                                     <button type="button" id="select_add" name="remove" class="btn btn-grey" style="margin-top:50px;margin-bottom:5px;"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                     <button type="button" id="select_remove" name="add" class="btn btn-grey" ><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <label>在..组中</label>
+                                    <select id='select_2' name="choice_groups" multiple='multiple' size=10 class="form-control">
+                                    {% for group in  user.groups.all %}
+                                        <option value={{ group.id }} selected>{{ group.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_position" maxlength="20" name="position" placeholder="所在地" type="text" value="{{ user.userprofile.position }}">
-                                    <i class="fa fa-home"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                
-                                <span class="input-icon icon-right">
-                                    <input class="form-control" id="id_native" maxlength="20" name="native" placeholder="籍贯" type="text" value="{{ user.userprofile.native}}">
-                                    <i class="fa fa-globe"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>
-                                    <input class="colored-success" id="id_is_active" name="is_active" type="checkbox" {% if user.is_active %} checked {% endif %} {% if user.id == 1%} disabled {% endif %}>
-                                    <span class="text">激活用户</span> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                                </label>
-                                <label>
-                                    <input class="colored-success" id="id_is_staff" name="is_staff" type="checkbox" {% if user.is_staff %} checked {% endif %} {% if user.id == 1%} disabled {% endif %}>
-                                    <span class="text">管理员</span>
-                                <label>
-                            </div>
-                        </div>
-                    </div>
-
+                    </div> <!-- tab-content -->
                     <button type="submit" class="btn btn-blue">提交</button>
+
                  </form>
             </div>
-
         </div>
-
     </div>
 </div>
 {% if form.subject.errors %}

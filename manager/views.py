@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password
 
@@ -17,8 +17,10 @@ from .models import UserProfile
 
 # Create your views here.
 
-def user_show(request):
-    request.breadcrumbs([('Home', '/' ),('用户管理', reverse('manager_user_show'))])
+
+@require_role(role='SA')
+def user_list(request):
+    request.breadcrumbs([('Home', '/' ),('用户管理', reverse('manager_user_list'))])
     keyword = request.GET.get('keyword', '')
     page_peer = int(request.GET.get('page_peer', 5))
     page = int(request.GET.get('page', 1))
@@ -29,69 +31,72 @@ def user_show(request):
         users = User.objects.all()
 
     user_list, page_range, page_peers = page_list(users,page_peer,page)
+    return render_to_response("manager/user_list.html", locals(), context_instance=RequestContext(request))
+
+
+@require_role(role='SA')
+def user_show(request):
+    request.breadcrumbs([('Home', '/' ),('编辑用户', reverse('manager_user_list'))])
+    uid = request.GET.get('id')
+    user = User.objects.get(pk=uid)
+    if UserProfile.objects.filter(user=user).count() == 0:
+        UserProfile.objects.create(user=user)
+
     return render_to_response("manager/user_show.html", locals(), context_instance=RequestContext(request))
 
 
 @require_role(role='SP')
 def user_add(request):
-    request.breadcrumbs([('Home', '/' ),('新增用户', reverse('manager_user_show'))])
+    request.breadcrumbs([('Home', '/' ),('用户管理', reverse('manager_user_list')),('新增用户', reverse('manager_user_list'))])
 
     if request.method == 'POST':
-        form = UserFormAdd(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            password_confirm = form.cleaned_data["password_confirm"]
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        password_confirm = request.POST.get("password_confirm")
 
-            fullname = form.cleaned_data["fullname"]
-            gender = form.cleaned_data["gender"]
-            tel = form.cleaned_data["tel"]
-            mobile = form.cleaned_data["mobile"]
-            address = form.cleaned_data["address"]
-            QQ = form.cleaned_data["QQ"]
-            position = form.cleaned_data["position"]
-            native = form.cleaned_data["native"]
+        fullname = request.POST.get("fullname")
+        gender = request.POST.get("gender")
+        tel = request.POST.get("tel")
+        mobile = request.POST.get("mobile")
+        address = request.POST.get("address")
+        QQ = request.POST.get("QQ")
+        position = request.POST.get("position")
+        native = request.POST.get("native")
 
-            is_active = form.cleaned_data["is_active"]
+        is_active = request.POST.get("is_active",False)
+        is_staff= request.POST.get("is_staff",False)
 
-            try:
-                if '' in [username, password, password_confirm]:
-                    messages.warning(request, '用户名和密码不能为空')
-                    raise ServerError
+        try:
+            if '' in [username, password, password_confirm]:
+                messages.warning(request, '用户名和密码不能为空')
+                raise ServerError
 
-                if password != password_confirm:
-                    messages.warning(request, '两次输入的密码不正确')
-                    raise ServerError
+            if password != password_confirm:
+                messages.warning(request, '两次输入的密码不正确')
+                raise ServerError
 
-                check_user_is_exist = User.objects.filter(username=username)
-                if check_user_is_exist:
-                    messages.warning(request, '用户已经存在')
-                    raise ServerError
+            check_user_is_exist = User.objects.filter(username=username)
+            if check_user_is_exist:
+                messages.warning(request, '用户已经存在')
+                raise ServerError
 
-            except ServerError:
-                return render_to_response("manager/user_add.html", locals(), context_instance=RequestContext(request))
-
-            else:
-                try:
-                    user = User.objects.create(username = username,password = make_password(password),is_active = not is_active,is_staff = False)
-                    profile = UserProfile.objects.create(user = user, fullname = fullname, gender = gender, tel = tel, mobile = mobile,
-                                                         address = address,QQ = QQ, position = position, native = native)
-
-
-
-                except ServerError:
-                     messages.warning(request, '用户创建失败')
-                else:
-                    messages.success(request, '用户创建成功')
-                    return redirect('manager_user_show')
-
-        else:
-            messages.warning(request, '表单无效')
+        except ServerError:
             return render_to_response("manager/user_add.html", locals(), context_instance=RequestContext(request))
 
+        else:
+            try:
+                user = User.objects.create(username = username, password = make_password(password),is_active = is_active,is_staff = is_staff)
+                profile = UserProfile.objects.create(user = user, fullname = fullname, gender = gender, tel = tel, mobile = mobile,
+                                                         address = address,QQ = QQ, position = position, native = native)
 
-    form = UserFormAdd()
+            except ServerError:
+                messages.warning(request, '用户创建失败')
+            else:
+                messages.success(request, '用户创建成功')
+                return redirect('manager_user_list')
+
+
     return render_to_response("manager/user_add.html", locals(), context_instance=RequestContext(request))
 
 
@@ -99,9 +104,10 @@ def user_add(request):
 
 @require_role(role='SP')
 def user_edit(request):
-    request.breadcrumbs([('Home', '/' ),('编辑用户', reverse('manager_user_show'))])
+    request.breadcrumbs([('Home', '/' ),('用户管理', reverse('manager_user_list')),('编辑用户', reverse('manager_user_list'))])
     uid = request.GET.get('id')
     user = User.objects.get(pk=uid)
+    groups = Group.objects.all()
     if UserProfile.objects.filter(user=user).count() == 0:
         UserProfile.objects.create(user=user)
 
@@ -120,10 +126,18 @@ def user_edit(request):
         is_active = request.POST.get("is_active")
         is_staff = request.POST.get("is_staff")
 
+        choice_groups = request.POST.getlist("choice_groups")
+
         try:
             user.email = email
             user.is_active = is_active
             user.is_staff = is_staff
+
+            user_groups = user.groups.all()
+            print choice_groups
+            print user_groups 
+
+
             user.save()
 
             user.userprofile.fullname = fullname
@@ -141,7 +155,7 @@ def user_edit(request):
             messages.warning(request, '用户更新失败')
         else:
             messages.success(request, '用户更新成功')
-            return redirect('manager_user_show')
+            return redirect('manager_user_list')
    
     return render_to_response("manager/user_edit.html", locals(), context_instance=RequestContext(request))
 
@@ -150,8 +164,48 @@ def user_del(request):
     uid = request.GET.get('id')
     User.objects.get(pk=uid).delete()
     messages.success(request, '用户删除成功')
-    return redirect('manager_user_show')
+    return redirect('manager_user_list')
 
+
+
+@require_role(role='SA')
+def group_list(request):
+    request.breadcrumbs([('Home', '/' ),('组管理', reverse('manager_group_list'))])
+    keyword = request.GET.get('keyword', '')
+    page_peer = int(request.GET.get('page_peer', 5))
+    page = int(request.GET.get('page', 1))
+
+    if keyword:
+        groups = Group.objects.filter(Q(username__icontains=keyword) | Q(first_name=keyword) | Q(last_name=keyword)).order_by('username')
+    else:
+        groups = Group.objects.all()
+
+    group_list, page_range, page_peers = page_list(groups,page_peer,page)
+    return render_to_response("manager/group_list.html", locals(), context_instance=RequestContext(request))
+
+
+
+@require_role(role='SP')
+def group_add(request):
+    request.breadcrumbs([('Home', '/' ),('组管理', reverse('manager_group_list')),('新增用户组', reverse('manager_group_add'))])
+    if request.method == 'POST':
+        name = request.POST.get("group_name")
+    
+        try:
+            check_user_is_exist = Group.objects.filter(name=name)
+            if check_user_is_exist:
+                messages.warning(request, '用户组已经存在')
+                raise ServerError
+
+        except ServerError:
+            return render_to_response("manager/group_add.html", locals(), context_instance=RequestContext(request))
+
+        else:
+            Group.objects.create(name=name)
+            messages.success(request, '用户组创建成功')
+            return redirect('manager_group_list')
+
+    return render_to_response("manager/group_add.html", locals(), context_instance=RequestContext(request))
 
 def profile(request):
     request.breadcrumbs([('Home', '/' ),('个人设置', reverse('manager_profile'))])

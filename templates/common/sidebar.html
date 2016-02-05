@@ -34,8 +34,13 @@
         <ul class="submenu">
         {% if user.is_staff %}
             <li {% if "user/" in request.path %} class="active" {% endif %}>
-                <a href="{% url "manager_user_show" %}">
+                <a href="{% url "manager_user_list" %}">
                     <span class="menu-text">用户管理</span>
+                </a>
+            </li>
+            <li {% if "group/" in request.path %} class="active" {% endif %}>
+                <a href="{% url "manager_group_list" %}">
+                    <span class="menu-text">组管理</span>
                 </a>
             </li>
         {% endif %}
